@@ -1,4 +1,4 @@
-ENV_NAME = 'PickAndPlace-v1'
+ENV_NAME = 'FetchPickAndPlace-v1'
 
 import torch.nn.functional as F
 import random
@@ -258,7 +258,7 @@ for repeat in range(5):
     model_imitation = network
 
 
-    def ppo(args):
+    def espd(args):
         def compute_cross_ent_error(batch_size,step_num):
             if ier_buffer.lenth(step_num)==0:
                 return None
@@ -307,14 +307,14 @@ for repeat in range(5):
         env.seed(args.seed)
         torch.manual_seed(args.seed)
 
-        optimizer = opt.RMSprop(network.parameters(), lr=args.lr_ppo)
+        #optimizer = opt.RMSprop(network.parameters(), lr=args.lr_ppo)
         optimizer_imitation = opt.RMSprop(model_imitation.parameters(),lr = args.lr_hid)
 
 
         reward_record = []
         global_steps = 0
 
-        lr_now = args.lr_ppo
+        #lr_now = args.lr_ppo
         clip_now = args.clip
         ier_buffer = ReplayBuffer_imitation(args.replay_buffer_size_IER)
         
@@ -460,12 +460,6 @@ for repeat in range(5):
                 ep_ratio = 1 - (i_episode / args.num_episode)
                 clip_now = args.clip * ep_ratio
 
-            if args.schedule_adam == 'linear':
-                ep_ratio = 1 - (i_episode / args.num_episode)
-                lr_now = args.lr_ppo * ep_ratio
-                for g in optimizer.param_groups:
-                    g['lr'] = lr_now
-
             if i_episode % args.log_num_episode == 0:
                 print('Finished episode: {} Reward: {:.4f} SuccessRate{:.4f} WinRate{:.4f}' \
                     .format(i_episode, reward_record[-1]['meanepreward'],SR,Winrate))
@@ -478,11 +472,11 @@ for repeat in range(5):
         record_dfs = []
         for i in range(args.num_parallel_run):
             args.seed += 1
-            reward_record = pd.DataFrame(ppo(args))
+            reward_record = pd.DataFrame(espd(args))
             reward_record['#parallel_run'] = i
             record_dfs.append(reward_record)
         record_dfs = pd.concat(record_dfs, axis=0)
-        record_dfs.to_csv(joindir(RESULT_DIR, 'ppo-record-{}.csv'.format(args.env_name)))
+        record_dfs.to_csv(joindir(RESULT_DIR, 'record-{}.csv'.format(args.env_name)))
 
    
 
