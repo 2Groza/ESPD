@@ -1,7 +1,7 @@
 # ESPD
 code for Evolutionary Stochastic Policy Distillation
 
-# The paper results can be reproduced by running the jupyter notebooks, or running the corresponding files directly by running, e.g.,
+### The paper results can be reproduced by running the jupyter notebooks, or running the corresponding files directly by running, e.g.,
 ```
 python main.py
 ```
