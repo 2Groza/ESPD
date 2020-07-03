@@ -9,6 +9,7 @@ import torch.optim as opt
 
 from replay_buffer import ReplayBuffer_imitation
 
+env = gym.make("FetchPush-v1")
 
 def select_action(action_mean, action_logstd, fctr):
     """
@@ -20,7 +21,7 @@ def select_action(action_mean, action_logstd, fctr):
     return action
 
 def eval_policy_50(fctr_used, args, network, device):
-    env = gym.make(args.env_name)
+    # env = gym.make(args.env_name)
     reward_sum = 0
     succ_game = 0
     for display_i in range(50):
@@ -108,7 +109,7 @@ def espd(args, network, device):
             state_tim = next_state_tim
         return 2  # learnable
 
-    env = gym.make(args.env_name)
+    # env = gym.make(args.env_name)
     # torch.manual_seed(args.seed)
     # torch.cuda.manual_seed_all(args.seed)
     # random.seed(args.seed)
@@ -118,7 +119,7 @@ def espd(args, network, device):
     Acceptance_rate = []
     FACTOR = args.factor
 
-    model_imitation = deepcopy(network).to(device)
+    model_imitation = network
     num_inputs = env.observation_space.spaces['observation'].shape[
         0] + env.observation_space.spaces['desired_goal'].shape[
             0]  # extended state
