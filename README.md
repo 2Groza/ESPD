@@ -6,7 +6,7 @@ This repo provides code for the *Evolutionary Stochastic Policy Distillation* [p
 
 The only dependencies are pytorch, gym and mujoco. 
 
-The paper results can be reproduced by running the jupyter notebooks (previous training logs are saved in those files), or running the train.py directly, e.g.,
+The paper results can be reproduced by calling the train.py directly, e.g.,
 
 ```
 python train.py
